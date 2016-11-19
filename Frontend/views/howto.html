@@ -1,0 +1,62 @@
+<div class="row row-margin-ignore">
+	<loader ng-if="isDataLoading"></loader>
+	<div ng-if="isLoggedIn && isAdmin" class="full-width text-align-center">
+		<ul class="breadcrumb background-inherit margin-0">
+			<li ng-repeat="status in statuses | orderBy:'id'">
+				<a class="hover color-light-gray" ng-click="showStatusArticles(status.id)">
+					{{status.name}}
+				</a>
+			</li>
+		</ul>
+	</div>
+	<div class="full-width text-align-center">
+		<ul class="breadcrumb background-inherit">
+			<li>
+				<a class="hover color-light-gray" ng-click="showAllArticles()">
+					All
+				</a>
+			</li>
+			<li ng-repeat="category in categories | orderBy:'name'">
+				<a class="hover color-light-gray" ng-click="showCategoryArticles(category.id)">
+					{{category.name}}
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="row row-margin-ignore min-height-1250">
+	<div class="col-xs-12 margin-bottom-30 height-205" 
+			dir-paginate="article in articles | orderBy:'createdDate' | itemsPerPage:5">
+
+		<div class="row margin-bottom-10 row-margin-ignore">
+			<div class="col-xs-8 col-padding-ignore">
+				<span class="hover font-size-30" ng-click="redirectToArticle(article.id)">
+					{{article.title}}
+				</span>	
+			</div>
+			<div class="col-xs-4 col-padding-ignore">
+				<div class="pull-right">
+					{{article.createdDate | date:'dd/MM/yyyy'}}
+				</div>
+			</div>
+		</div>
+
+		<div class="row row-margin-ignore">
+			<div class="col-xs-2 col-padding-ignore">
+				<img src="" ng-src="{{article.image}}" alt="Article image" ng-click="redirectToArticle(article.id)"
+				class="col-xs-12 col-padding-ignore cursor-pointer max-height-150">
+			</div>
+			<div class="col-xs-8">
+				<div ng-bind-html="article.content.substring(0, 100) + '...'"></div>
+			</div>
+			<div ng-if="isAdmin" class="col-xs-2 col-padding-ignore">
+				<button class="btn btn-default pull-right" ng-click="editArticle(article.id)">Edit</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="full-width text-align-center">
+	<dir-pagination-controls boundary-links="true" template-url="/views/dirPagination.tpl.html"></dir-pagination-controls>
+</div>

@@ -1,0 +1,5 @@
+<div class="row row-margin-ignore">
+	<loader ng-if="isDataLoading"></loader>
+	<div ng-if="isCreateMode || isEditMode" ng-include="'views/_createEditArticle.html'"></div>
+	<div ng-if="isReadMode" ng-include="'views/_readArticle.html'"></div>
+</div>

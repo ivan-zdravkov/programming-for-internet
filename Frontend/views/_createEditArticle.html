@@ -1,0 +1,107 @@
+<div ng-if="articleNotFound" class="text-align-center">
+	<h1>
+		{{errorMessage}}
+	</h1>
+</div>
+<div class="row row-margin-ignore" ng-if="!articleNotFound">
+	<form class="form-horizontal" role="form">
+		<div class="col-xs-12 margin-bottom-10">
+			<label for="title">Article title:</label>
+			<div>
+				<input type="text" ng-model="article.title" ng-change="titleChange()" 
+				class="form-control" id="title" placeholder="Enter title">
+				<p class="help-block" ng-if="invalidTitle">Please enter a title</p>
+			</div>
+		</div>
+		
+		<div class="col-xs-12 col-padding-ignore margin-bottom-10">
+			<div class="col-xs-4">
+				<label for="image">Article image:</label>
+				<br>
+				<button class="btn btn-danger margin-bottom-10" ng-click="removeImage()" ng-if="article.image.length">Remove Image</button>
+				<input id="fileSelect" type="file" fileread="article.image" id="image">
+			</div>
+			<div class="col-xs-4">
+				<div>
+					Status
+				</div>
+				<div class="btn-group min-width-130">
+				    <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown">
+				        {{selectedStatus.name || 'Select Status'}}
+				        <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				        <li ng-repeat="status in statuses | orderBy:'name'">
+				        	<a href="" ng-click="selectStatus(status)">{{status.name}}</a>
+			        	</li>
+				    </ul>
+				    <p class="help-block" ng-if="invalidStatus">Please select a status</p>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div>
+					Category
+				</div>
+				<div class="btn-group min-width-130">
+				    <button type="button" class="form-control btn btn-default dropdown-toggle" data-toggle="dropdown">
+				        {{selectedCategory.name || 'Select Category'}}
+				        <span class="caret"></span>
+				    </button>
+				    <ul class="dropdown-menu" role="menu">
+				        <li ng-repeat="category in categories | orderBy:'name'">
+				        	<a href="" ng-click="selectCategory(category)">{{category.name}}</a>
+			        	</li>
+				    </ul>
+				    <p class="help-block" ng-if="invalidCategory">Please select a category</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-xs-3 margin-bottom-10">
+			<label for="image" class="hover">
+				<img ng-if="article.image" src="" ng-src="{{article.image}}" alt="" class="full-width">
+			</label>
+		</div>
+
+		<div class="col-xs-12 margin-bottom-10">
+			<div text-angular="" ng-model="article.content" ng-change="contentChange()" style="min-height:400px;"></div>
+			  <p class="help-block" ng-if="invalidContent">Please write an article content</p>
+		</div>
+		
+		<div class="col-xs-12 margin-bottom-20">
+			<label for="title">Tags: 
+				<span ng-repeat="selectedTag in article.selectedTags" class="padding-left-10"> 
+					{{selectedTag.name}} <span class="glyphicon glyphicon-remove small-red-glyphicon" ng-click="removeTag(selectedTag)"></span>
+				</span>
+			</label>
+			<div>
+				<input type="text" ng-model="inputTag.value" class="form-control" id="tag" placeholder="Enter tag" data-toggle="dropdown">
+				<ul class="dropdown-menu margin-left-15" role="menu">
+					<li ng-if="$index < 5" ng-repeat="tag in tags | tagFilter:inputTag.value:article.selectedTags">
+						<a ng-click="addTag(tag)" class="hover">{{tag.name}}</a>
+					</li>
+					<li ng-if="$index == 5" ng-repeat="tag in tags | tagFilter:inputTag.value:article.selectedTags">
+						<a>...</a>
+					</li>
+					<li ng-show="(tags | tagFilter:inputTag.value:article.selectedTags).length == 0 && !tagExists(inputTag.value)">
+						<a ng-click="addNewTag(inputTag.value)" class="hover">No tags found. Click here to create one.</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div ng-if="isPreview" class="col-xs-12 margin-bottom-20 break-word">
+			<div ta-bind ng-model="article.content">
+			</div>
+		</div>
+
+		<div class="col-xs-12 margin-bottom-50">
+			<div class="text-align-right">
+				<button ng-if="isEditMode && article.id > 0" type="submit" class="btn btn-danger float-left" ng-click="delete()" ng-disabled="isDataLoading">Delete</button>
+				<button type="submit" class="btn btn-default" ng-click="previewArticle()">Preview</button>
+		        <button type="submit" class="btn btn-primary" ng-click="save()" ng-disabled="isDataLoading">Save</button>
+				<button type="submit" class="btn btn-default" ng-click="redirectToHowToPage()">Cancel</button>
+		    </div>
+		</div>
+	</form>
+</div>

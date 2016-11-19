@@ -1,0 +1,27 @@
+<div class="row row-margin-ignore">
+	<div class="col-xs-12 margin-bottom-30">
+		<div class="row margin-bottom-20 row-margin-ignore">
+			<span ng-bind="article.title" class="wrap-text font-size-30"></span>
+			<span class="pull-right">{{article.createdDate | date:'dd/MM/yyyy'}}</span>
+		</div>
+		<div class="row margin-bottom-20 row-margin-ignore">
+			<span class="wrap-text italic">{{selectedCategory.name}}</span>
+		</div>
+		<div class="row row-margin-ignore">
+			<div class="col-xs-4 col-padding-ignore margin-bottom-20">
+				<img src="" ng-src="{{article.image}}" alt="Article image"
+				class="full-width">
+			</div>
+			<div class="col-xs-12 col-padding-ignore">
+				<div ta-bind ng-model="article.content"></div>
+			</div>
+		</div>
+		<div class="row row-margin-ignore">
+			<div class="col-xs-offset-10 col-xs-2">
+				<div class="text-align-right">        
+			        <button type="submit" class="btn btn-default" ng-click="redirectToHowToPage()">Go back</button>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
