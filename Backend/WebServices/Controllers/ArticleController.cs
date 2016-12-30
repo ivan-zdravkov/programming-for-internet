@@ -1,5 +1,6 @@
 ﻿using DAL.Models;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Web.Http;
 using WebServices.Interfaces;
@@ -22,6 +23,33 @@ namespace WebServices.Controllers
             IEnumerable<ArticleOutputModel> allArticles = this.DAL.GetAllArticles();
 
             return Ok(allArticles);
+        }
+
+        [HttpGet]
+        [Route("getArticlesPerCategoryOverview")]
+        [AllowAnonymous]
+        public IHttpActionResult GetArticlesPerCategoryOverview()
+        {
+            IEnumerable<ArticleOutputModel> allArticles = this.DAL.GetAllArticles();
+
+            Dictionary<string, Dictionary<string, int>> statistics = allArticles
+                .GroupBy(article => new { article.Category.Id, article.Category.Name })
+                .ToDictionary(d => d.Key.Name,
+                              d => d.GroupBy(art_cat_group => new { art_cat_group.CreatedDate.Month, art_cat_group.CreatedDate.Year })
+                                    .ToDictionary(art_cat_group_month => art_cat_group_month.Key.Month.ToString() + '/' + art_cat_group_month.Key.Year.ToString(),
+                                                  art_cat_group_month => art_cat_group_month.Count()));
+
+            IEnumerable<string> months = allArticles
+                .OrderBy(article => article.CreatedDate.Year)
+                .ThenBy(article => article.CreatedDate.Month)
+                .Select(article => article.CreatedDate.Month.ToString() + '/' + article.CreatedDate.Year.ToString())
+                .Distinct();
+
+            return Ok(new
+            {
+                months = months,
+                articles = statistics
+            });
         }
 
         [HttpGet]

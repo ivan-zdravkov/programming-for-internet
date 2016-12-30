@@ -12,6 +12,15 @@ app.factory('articleService', ['$http', '$q', 'authSettings', 'authenticationSer
 	        return promise;
 		};
 
+        var _getArticlesPerCategoryOverview = function () {
+            var resourceURL = serviceBase + '/api/article/getArticlesPerCategoryOverview';
+            var promise = queryService.get(resourceURL, 'UTC');
+
+            return promise;
+        };
+
+
+
 		var _getArticleById = function (articleId) {
 			var resourceURL = serviceBase + '/api/article/getById/' + articleId;
 	        var promise = queryService.get(resourceURL, 'UTC');
@@ -63,6 +72,7 @@ app.factory('articleService', ['$http', '$q', 'authSettings', 'authenticationSer
 
 		return {
 			getAllArticles: _getAllArticles,
+            getArticlesPerCategoryOverview: _getArticlesPerCategoryOverview,
 			getArticleById: _getArticleById,
 			submitArticle: _submitArticle,
 			createArticle: _createArticle,

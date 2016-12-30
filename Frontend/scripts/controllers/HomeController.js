@@ -2,20 +2,35 @@
 
 app.controller('HomeController', 
 	['$scope', 'articleService', function ($scope, articleService) {
-        articleService.getAllArticles().then(function(articles) {
+        articleService.getArticlesPerCategoryOverview().then(function(response) {
         	debugger;
+            var series = [];
+
+        	for(var category in response.articles){
+        	    var set = {
+        	        name: category,
+                    data: Array.apply(null, Array(response.months.length)).map(function(){ return null;})
+                };
+
+        	    for(var month in response.articles[category]){
+                    var monthIdx = response.months.indexOf(month);
+
+                    set.data[monthIdx] = response.articles[category][month];
+                }
+
+                series.push(set);
+            }
+
+            $scope.articlesChart.xAxis.categories = response.months;
+            $scope.articlesChart.series = series;
             $scope.articlesChart.version++;
 		});
 
         $scope.articlesChart = {
         	version: 0,
             title: {
-                text: 'Monthly Average Temperature',
+                text: 'Articles per month (by category)',
                 x: -20 //center
-            },
-            subtitle: {
-                text: 'Source: WorldClimate.com',
-                x: -20
             },
             xAxis: {
                 categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -23,7 +38,7 @@ app.controller('HomeController',
             },
             yAxis: {
                 title: {
-                    text: 'Temperature (°C)'
+                    text: 'Articles (count)'
                 },
                 plotLines: [{
                     value: 0,
@@ -32,7 +47,7 @@ app.controller('HomeController',
                 }]
             },
             tooltip: {
-                valueSuffix: '°C'
+                //valueSuffix: '°C'
             },
             legend: {
                 layout: 'vertical',
