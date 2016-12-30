@@ -1,14 +1,12 @@
-﻿using DAL.Extensions;
+﻿using DAL.EntityFramework;
+using DAL.Enums;
+using DAL.Extensions;
+using DAL.Models;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DAL.Models;
-using DAL.EntityFramework;
-using DAL.Enums;
 
 namespace DAL
 {
@@ -43,6 +41,7 @@ namespace DAL
         {
             Article article = this.DB.Articles
                 .AsNoTracking()
+                .Include(a => a.Category)
                 .Include(a => a.ArticleTags)
                 .Include(a => a.ArticleTags.Select(at => at.Tag))
                 .SingleOrDefault(a => a.Id == articleId);
@@ -55,7 +54,7 @@ namespace DAL
                     Title = article.Name,
                     Content = article.Text,
                     StatusId = article.StatusID,
-                    CategoryId = article.CategoryID,
+                    Category = new BasicModel() { Id = article.CategoryID, Name = article.Category.Name },
                     Image = article.Image,
                     SelectedTags = article.ArticleTags
                         .OrderBy(at => at.Tag.Name)
@@ -72,11 +71,12 @@ namespace DAL
                 throw new ArgumentException("Article not found.");
             }
         }
-      
+
         public IEnumerable<ArticleOutputModel> GetAllArticles()
         {
             return this.DB.Articles
                 .AsNoTracking()
+                .Include(a => a.Category)
                 .Include(a => a.ArticleTags)
                 .Include(a => a.ArticleTags.Select(at => at.Tag))
                 .OrderBy(a => a.Name)
@@ -86,7 +86,7 @@ namespace DAL
                     Title = article.Name,
                     Content = article.Text,
                     StatusId = article.StatusID,
-                    CategoryId = article.CategoryID,
+                    Category = new BasicModel() { Id = article.CategoryID, Name = article.Category.Name },
                     Image = article.Image,
                     SelectedTags = article.ArticleTags
                         .OrderBy(at => at.Tag.Name)
@@ -103,19 +103,20 @@ namespace DAL
         {
             return this.DB.Articles
                .AsNoTracking()
+               .Include(a => a.Category)
                .Include(a => a.ArticleTags)
                .Include(a => a.ArticleTags.Select(at => at.Tag))
                .Where(a => a.CategoryID == categoryId)
                .OrderBy(a => a.Name)
                .Select(article => new ArticleOutputModel()
                {
-                    Id = article.Id,
-                    Title = article.Name,
-                    Content = article.Text,
-                    StatusId = article.StatusID,
-                    CategoryId = article.CategoryID,
-                    Image = article.Image,
-                    SelectedTags = article.ArticleTags
+                   Id = article.Id,
+                   Title = article.Name,
+                   Content = article.Text,
+                   StatusId = article.StatusID,
+                   Category = new BasicModel() { Id = article.CategoryID, Name = article.Category.Name },
+                   Image = article.Image,
+                   SelectedTags = article.ArticleTags
                        .OrderBy(at => at.Tag.Name)
                        .Select(at => new BasicModel()
                        {
@@ -130,6 +131,7 @@ namespace DAL
         {
             return this.DB.Articles
                .AsNoTracking()
+               .Include(a => a.Category)
                .Include(a => a.ArticleTags)
                .Include(a => a.ArticleTags.Select(at => at.Tag))
                .Where(a => a.ArticleTags.Any(at => at.TagID == tagId))
@@ -140,7 +142,7 @@ namespace DAL
                    Title = article.Name,
                    Content = article.Text,
                    StatusId = article.StatusID,
-                   CategoryId = article.CategoryID,
+                   Category = new BasicModel() { Id = article.CategoryID, Name = article.Category.Name },
                    Image = article.Image,
                    SelectedTags = article.ArticleTags
                        .OrderBy(at => at.Tag.Name)
@@ -176,7 +178,7 @@ namespace DAL
             IEnumerable<string> notExistingTags = articleModel.Tags
                 .Where(t => !existingTags.Select(et => et.Name).Contains(t));
 
-            foreach(string nonExistingTag in notExistingTags)
+            foreach (string nonExistingTag in notExistingTags)
             {
                 Tag tagToCreate = this.DB.Tags.Create();
 
@@ -215,8 +217,8 @@ namespace DAL
             {
                 article.Name = articleModel.Title;
                 article.Text = articleModel.Content;
-                article.CategoryID = articleModel.CategoryId; 
-                
+                article.CategoryID = articleModel.CategoryId;
+
                 if (articleModel.ImageURL != null)
                 {
                     article.Image = articleModel.ImageURL;

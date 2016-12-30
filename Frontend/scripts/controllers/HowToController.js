@@ -51,12 +51,12 @@ app.controller('HowToController',
 			$scope.showCategoryArticles = function (categoryId) {
 				if ($rootScope.isAdmin) { 
 					$scope.articles = $scope.articlesArray.filter(function (article) {
-						return article.categoryId === categoryId;
+						return article.category.id === categoryId;
 					});
 				}
 				else {
 					$scope.articles = $scope.articlesArray.filter(function (article) {
-						return article.categoryId === categoryId && article.statusId === $scope.approvedStatusId;
+						return article.category.id === categoryId && article.statusId === $scope.approvedStatusId;
 					});
 				}
 			};

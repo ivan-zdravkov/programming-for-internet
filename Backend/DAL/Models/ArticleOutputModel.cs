@@ -18,7 +18,7 @@ namespace DAL.Models
 
         public int StatusId { get; set; }
 
-        public int CategoryId { get; set; }
+        public BasicModel Category { get; set; }
 
         public IEnumerable<BasicModel> SelectedTags { get; set; }
  
