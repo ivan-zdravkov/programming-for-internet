@@ -22,7 +22,6 @@ namespace DAL.Extensions
 
         public override int SaveChanges()
         {
-            Random rnd = new Random();
             ChangeTracker.DetectChanges();
 
             ObjectContext ctx = ((IObjectContextAdapter)this).ObjectContext;
@@ -41,7 +40,7 @@ namespace DAL.Extensions
                     if (entry.Entity.GetType().GetProperties().Where(t => t.Name == "CreatedAt").Any())
                     {
                         Type type = entry.Entity.GetType();
-                        type.GetProperties().Where(t => t.Name == "CreatedAt").First().SetValue(entry.Entity, new DateTime(DateTime.UtcNow.Year, rnd.Next(6, 12), rnd.Next(1, 28)));
+                        type.GetProperties().Where(t => t.Name == "CreatedAt").First().SetValue(entry.Entity, DateTime.UtcNow);
                     }
                 }
             }

@@ -10,7 +10,7 @@
 	</p>
 	<img src="../images/cartoonCharacter.jpg" alt="">
 
-	<div id="statistics">
+	<div id="statistics" ng-if="articlesChart.series.length > 0">
 		<highcharts-element options="articlesChart" chart-version="articlesChart.version"></highcharts-element>
 	</div>
 </div>
