@@ -3,6 +3,7 @@
 :r .\Category.sql
 :r .\Status.sql
 :r .\Tag.sql
+:r .\Article.sql
 
 -- REQUIRES dbo.AspNetRoles
 :r .\IdentityTables\AspNetUsers.sql

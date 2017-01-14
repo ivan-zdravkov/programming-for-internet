@@ -91,6 +91,7 @@
     <None Include="Scripts\Post-Deployment\Seed\Category.sql" />
     <None Include="Scripts\Post-Deployment\Seed\Status.sql" />
     <None Include="Scripts\Post-Deployment\Seed\Tag.sql" />
+    <None Include="Scripts\Post-Deployment\Seed\Article.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\Post-Deployment\Seed\IdentityTables\AspNetUserRoles.sql" />
