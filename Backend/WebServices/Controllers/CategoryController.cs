@@ -10,6 +10,9 @@ namespace WebServices.Controllers
     [Authorize]
     public class CategoryController : BaseApiController
     {
+        /// <summary>
+        /// [Anonymous] Gets all categories.
+        /// </summary>
         [HttpGet]
         [Route("getAll")]
         [AllowAnonymous]
@@ -20,6 +23,9 @@ namespace WebServices.Controllers
             return Ok(allCategories);
         }
 
+        /// <summary>
+        /// [Administrator] Create a category.
+        /// </summary>
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "Administrator")]
@@ -30,6 +36,9 @@ namespace WebServices.Controllers
             return Ok(categoryId);
         }
 
+        /// <summary>
+        /// [Administrator] Update a category.
+        /// </summary>
         [HttpPut]
         [Route("update")]
         [Authorize(Roles = "Administrator")]
@@ -40,6 +49,10 @@ namespace WebServices.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// [Administrator] Delete a category.
+        /// </summary>
+        /// <param name="categoryId">Id of category.</param>
         [HttpDelete]
         [Route("delete/{categoryId}")]
         [Authorize(Roles = "Administrator")]

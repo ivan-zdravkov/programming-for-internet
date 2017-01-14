@@ -15,6 +15,9 @@ namespace WebServices.Controllers
     {
         private IImageServiceInterface imageHandler = new CloudinaryImageService();
 
+        /// <summary>
+        /// [Anonymous] Get all articles.
+        /// </summary>
         [HttpGet]
         [Route("getAll")]
         [AllowAnonymous]
@@ -25,6 +28,9 @@ namespace WebServices.Controllers
             return Ok(allArticles);
         }
 
+        /// <summary>
+        /// [Anonymous] Get all articles grouped by categories and months.
+        /// </summary>
         [HttpGet]
         [Route("getArticlesPerCategoryOverview")]
         [AllowAnonymous]
@@ -52,6 +58,10 @@ namespace WebServices.Controllers
             });
         }
 
+        /// <summary>
+        /// [Anonymous] Get all articles in a specific category.
+        /// </summary>
+        /// <param name="categoryId">Id of category.</param>
         [HttpGet]
         [Route("getAllInCategory/{categoryId}")]
         [AllowAnonymous]
@@ -62,6 +72,10 @@ namespace WebServices.Controllers
             return Ok(allArticlesInCategory);
         }
 
+        /// <summary>
+        /// [Anonymous] Get all articles with a specifig tag.
+        /// </summary>
+        /// <param name="tagId">Id of tag.</param>
         [HttpGet]
         [Route("getAllInTag/{tagId}")]
         [AllowAnonymous]
@@ -72,6 +86,10 @@ namespace WebServices.Controllers
             return Ok(allArticlesInTag);
         }
 
+        /// <summary>
+        /// [Anonymous] Get a specific article.
+        /// </summary>
+        /// <param name="articleId">Id of article.</param>
         [HttpGet]
         [Route("getById/{articleId}")]
         [AllowAnonymous]
@@ -82,6 +100,9 @@ namespace WebServices.Controllers
             return Ok(article);
         }
 
+        /// <summary>
+        /// [User] Submit an article for administrator review.
+        /// </summary>
         [HttpPost]
         [Route("submit")]
         public IHttpActionResult CreateArticle(ArticleInputModel article)
@@ -103,6 +124,9 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Administrator] Create an article as an administrator.
+        /// </summary>
         [HttpPost]
         [Route("create")]
         [Authorize(Roles = "Administrator")]
@@ -125,6 +149,10 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Administrator] Update an article.
+        /// </summary>
+        /// <param name="articleId">Id of article.</param>
         [HttpPut]
         [Route("update/{articleId}")]
         [Authorize(Roles = "Administrator")]
@@ -147,6 +175,9 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Administrator] Change status of an article.
+        /// </summary>
         [HttpPut]
         [Route("changeStatus")]
         [Authorize(Roles = "Administrator")]
@@ -164,6 +195,10 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Administrator] Delete an article.
+        /// </summary>
+        /// <param name="articleId">Id of article.</param>
         [HttpDelete]
         [Authorize(Roles = "Administrator")]
         [Route("delete/{articleId}")]
@@ -174,6 +209,9 @@ namespace WebServices.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// [Administrator] Get all article statuses.
+        /// </summary>
         [HttpGet]
         [Route("getAllStatuses")]
         [Authorize(Roles = "Administrator")]

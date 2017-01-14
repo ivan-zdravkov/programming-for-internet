@@ -14,6 +14,9 @@ namespace WebServices.Controllers
     [RoutePrefix("api/roles")]
     public class RolesController : BaseApiController
     {
+        /// <summary>
+        /// [User] Get all roles.
+        /// </summary>
         [HttpGet]
         [Route("all")]
         public IHttpActionResult GetAll()
@@ -21,6 +24,11 @@ namespace WebServices.Controllers
             return Ok(this.AppRoleManager.Roles.ToList().Select(r => new RoleModel() { Id = r.Id, Name = r.Name }));
         }
 
+        /// <summary>
+        /// [Administrator] Add a role to user.
+        /// </summary>
+        /// <param name="userId">GUID id of user.</param>
+        /// <param name="roleName">GUID id of role.</param>
         [HttpPut]
         [Route("addRoleToUser/{roleName}/{userId:guid}")]
         [Authorize(Roles = "Administrator")]
@@ -51,6 +59,11 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Administrator] Remove a role from user.
+        /// </summary>
+        /// <param name="userId">GUID id of user.</param>
+        /// <param name="roleName">GUID id of role.</param>
         [HttpDelete]
         [Route("removeRoleFromUser/{roleName}/{userId:guid}")]
         [Authorize(Roles = "Administrator")]

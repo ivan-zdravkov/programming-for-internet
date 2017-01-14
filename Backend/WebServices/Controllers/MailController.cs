@@ -11,6 +11,9 @@ namespace WebServices.Controllers
     [Authorize]
     public class MailController : BaseApiController
     {
+        /// <summary>
+        /// [User] Send an email message to the site administrators.
+        /// </summary>
         [HttpPost]
         [Route("sendMail")]
         public async Task<IHttpActionResult> SendMail(SimpleMailModel mail)

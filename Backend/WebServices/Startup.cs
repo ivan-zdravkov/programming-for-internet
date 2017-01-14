@@ -13,6 +13,8 @@ using System.Linq;
 using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Http.WebHost;
 using WebServices.Infrastructure;
 using WebServices.Providers;
 
@@ -20,17 +22,21 @@ namespace WebServices
 {
     public class Startup
     {
+        public static HttpConfiguration HttpConfig { get; set; }
+
         public void Configuration(IAppBuilder app)
         {
             app.UseCors(CorsOptions.AllowAll);
 
-            HttpConfiguration httpConfig = new HttpConfiguration();
+            HttpConfig = new HttpConfiguration();
+
+            AreaRegistration.RegisterAllAreas();
 
             ConfigureOAuthTokenGeneration(app);
             ConfigureOAuthTokenConsumption(app);
 
-            ConfigureWebApi(httpConfig);
-            app.UseWebApi(httpConfig);
+            ConfigureWebApi(HttpConfig);
+            app.UseWebApi(HttpConfig);
         }
 
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)

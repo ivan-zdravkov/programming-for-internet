@@ -18,6 +18,9 @@ namespace WebServices.Controllers
     [Authorize]
     public class AccountsController : BaseApiController
     {
+        /// <summary>
+        /// [Administrator] Get all users.
+        /// </summary>
         [HttpGet]
         [Route("users")]
         [Authorize(Roles = "Administrator")]
@@ -26,6 +29,10 @@ namespace WebServices.Controllers
             return Ok(this.AppUserManager.Users.ToList().Select(u => new UserModel(u, this.AppUserManager, this.AppRoleManager)));
         }
 
+        /// <summary>
+        /// [Administrator] Get a single user.
+        /// </summary>
+        /// <param name="Id">GUID id of user.</param>
         [HttpGet]
         [Route("user/{id:guid}", Name = "GetUser")]
         [Authorize(Roles = "Administrator")]
@@ -41,6 +48,10 @@ namespace WebServices.Controllers
             return NotFound();
         }
 
+        /// <summary>
+        /// [Administrator] Delete a user.
+        /// </summary>
+        /// <param name="id">GUID id of user.</param>
         [HttpDelete]
         [Route("user/{id:guid}")]
         [Authorize(Roles = "Administrator")]
@@ -52,12 +63,22 @@ namespace WebServices.Controllers
             {
                 IdentityResult result = await this.AppUserManager.DeleteAsync(user);
 
-                return Ok();
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return BadRequest("User could not be deleted.");
+                }
             }
 
             return NotFound();
         }
 
+        /// <summary>
+        /// [Anonymous] Create a user.
+        /// </summary>
         [HttpPost]
         [Route("create")]
         [AllowAnonymous]
@@ -105,9 +126,11 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [User] Changes the password of the current user.
+        /// </summary>
         [HttpPut]
         [Route("changePassword")]
-        [AllowAnonymous]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (ModelState.IsValid)
@@ -129,6 +152,9 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Anonymous] Checks whether the provided email is available for register.
+        /// </summary>
         [HttpPost]
         [Route("isEmailAvailable")]
         [AllowAnonymous]
@@ -144,6 +170,9 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [Anonymous] Confirms the email when registering a new user.
+        /// </summary>
         [HttpGet]
         [Route("confirmEmail", Name = "ConfirmEmailRoute")]
         [AllowAnonymous]
@@ -167,6 +196,9 @@ namespace WebServices.Controllers
             }
         }
 
+        /// <summary>
+        /// [User] Checks whether the current user is in role "Administrator".
+        /// </summary>
         [HttpGet]
         [Route("isAdmin")]
         public IHttpActionResult IsAdmin()

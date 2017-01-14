@@ -11,6 +11,9 @@ namespace WebServices.Controllers
     [Authorize]
     public class TagController : BaseApiController
     {
+        /// <summary>
+        /// [Anonymous] Get all tags.
+        /// </summary>
         [HttpGet]
         [Route("getAll")]
         [AllowAnonymous]
@@ -21,6 +24,10 @@ namespace WebServices.Controllers
             return Ok(allTags);
         }
 
+        /// <summary>
+        /// [Anonymous] Get all tags similar to the provided parameter.
+        /// </summary>
+        /// <param name="tagName">Tag name to find similar tags against.</param>
         [HttpGet]
         [Route("getAllLike/{tagName}")]
         [AllowAnonymous]
